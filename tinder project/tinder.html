@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width">
+	<title>Tinder</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.0/spectre.min.css" />
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	
+	<style type="text/css">
+		body{
+			background-color: #D2D3D6;
+		}
+		img#profile_img {
+		    width: 120%;
+		    position: relative;
+		    transition: all 0.5s ease .1s;
+		    left: -60px;
+		}
+		img.img_like {
+		    display:  none;
+		    position: absolute;
+		    z-index: 9;
+		}
+		#tinder {
+	       margin:20px auto 0	;
+	       position: relative;
+	       border:1px solid #cdcdcd;
+	       background-color: #ffffff;
+	       overflow: hidden;
+	       z-index: 999999;
+	     }
+	     .info_div {
+		    padding: 10px 20px;
+		}
+		.info_div p {
+		    margin: 0;
+		}
+		.buttons span {
+		    display:  inline-block;
+		    border-radius:  50%;
+		    height:  80px;
+		    width: 80px;
+		    text-align:  center;
+		    margin: 0 10px;
+		    background-color: #ffffff;
+		    cursor: pointer;
+		}
+		i.fa.fa-heart {
+		    color: #83F2C2;
+		}
+
+		i.fa.fa.fa-times {
+		    color: #D94472;
+		}
+		.buttons {
+		    text-align:  center;
+		    padding: 10px;
+		}
+
+		.buttons span i {
+		    font-size:  50px;
+		    padding: 14px 0;
+		}
+		.info_div{
+			display: none;
+		}
+		p#name1 {
+		    position:  absolute;
+		    bottom:  0;
+		    left:  20px;
+		    color:  #ffffff;
+		    font-weight: bold;
+		}
+		.img_div{
+			position: relative;
+			max-height: 460px;
+			overflow: hidden;
+		}
+	</style>
+          
+</head>
+<body>
+	<div class="container">
+		<div class="columns">
+			<div class="column col-4"></div>
+			<div class="column col-4">
+				<div id="tinder">
+					<img class="img_like" src="images/like.png">
+					<div class="img_div">
+						<img id="profile_img" src="images/man2.jpeg">
+						<p id="name1">Aman Bhullar</p>
+					</div>
+					<div class="info_div">
+						<h2><span id="name">Aman Bhullar</span>, <span id="age">30 years old </span> </h2>
+			            <p >Info: <span id="desc">I love movies, hiking, and the beach </span></p>
+					</div>
+				</div>
+				<div class="buttons">
+					<span id="dislike"><i class="fa fa fa-times" aria-hidden="true"></i></span>
+					<span id="like"><i class="fa fa-heart" aria-hidden="true"></i></span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js" integrity="sha256-GMd3rFxMDNnM5JQEpiKLLl8kSrDuG5egqchk758z59g=" crossorigin="anonymous"></script>
+    <script src="jquery.hammer.js"></script>
+	<script type="text/javascript">
+		var index=0;
+		var newindex=0;
+		var card = $("#tinder");
+		var card2 = $("#tinder .img_div img");
+		card.hammer().bind("swipeleft", dislike);
+		card2.hammer().bind("swipeleft", dislike);
+	    card.hammer().bind("swiperight", like);
+	    card2.hammer().bind("swiperight", like);
+	    $("#dislike").click(function(){
+	    	dislike();
+
+	    })
+	    $("#like").click(function(){
+	    	like();
+	    })
+	    $("#profile_img").click(function () {
+	    	if($(".info_div").is(":visible")){
+	    		$(".info_div").slideUp(500);
+	    		$("#profile_img ").css({"width":"120%","left":"-60px"});
+	    		$("#name1 ").css({"visibility":"visible","bottom":"0px"});
+	    	}else{
+	    		$("#profile_img ").css({"width":"100%","left":"0px"});
+	    		$("#name1 ").css({"visibility":"hidden","bottom":"-20px"});
+	    		$(".info_div").slideDown(500);
+	    	}
+	    	
+	    })
+	    // create another person
+	    var img = ["images/man3.jpeg", "images/man1.jpeg", "images/rishu.jpg", "images/man4.jpeg", "images/girl1.jpeg", "images/girl2.jpeg", "images/chaman.jpg"];
+	    var x = ["Sam Smith", "Jhon doe", "Rishu Khullar", "Rishi", "Ritisha", "Lavi", "Chaman"];
+	    var y = ["25 years old", "24 years old", "25 years old", "25 years old", "25 years old", "25 years old", "25 years old"];
+	    var z = ["I like movies and salad.","I like salad.","I like coding.","I like you.","I like salad.","I like salad.","I like Songs & Singing."];
+	    // here is the DISLIKE function
+	    function dislike(ev) {
+
+	    	//console.log(Math.floor(Math.random() * 3));
+			
+	    	$(".img_like").hide();
+			// if the "like" image is showing, hide it
+			if ($(".like").is(":visible")) {
+				$(".like").hide();
+			}
+
+			$("#tinder").fadeOut(500, function(){
+				newindex = img.indexOf(img[Math.floor(Math.random() * 7)]);
+				while(newindex == index){
+					newindex = img.indexOf(img[Math.floor(Math.random() * 7)]);
+				}
+				
+				$("#name").empty();
+				$("#name1").empty();
+				$("#age").empty();
+				$("#desc").empty();
+				// show Sam
+				$("#profile_img").attr("src", img[newindex]);
+				$("#name").append(x[newindex]);
+				$("#name1").append(x[newindex]);
+				$("#age").append(y[newindex]);
+				$("#desc").append(z[newindex]);
+				// show the info
+				$("#tinder").fadeIn(500);
+				
+				
+			});
+			index = newindex;
+			
+	    }
+
+	    // here is the LIKE function
+	    function like(ev) {
+
+			// show the like image
+			$(".img_like").show();
+			setTimeout(function(){
+				$(".img_like").hide(); 
+				newindex = img.indexOf(img[Math.floor(Math.random() * 7)]);
+				while(newindex == index){
+					newindex = img.indexOf(img[Math.floor(Math.random() * 7)]);
+				}
+				$("#tinder").fadeOut(500, function(){
+					
+					$("#name").empty();
+					$("#name1").empty();
+					$("#age").empty();
+					$("#desc").empty();
+					// show Sam
+					$("#profile_img").attr("src", img[newindex]);
+					$("#name").append(x[newindex]);
+					$("#name1").append(x[newindex]);
+					$("#age").append(y[newindex]);
+					$("#desc").append(z[newindex]);
+					// show the info
+					$("#tinder").fadeIn(500);
+					
+				});
+				index = newindex;
+			}, 2000);
+
+	    }
+	</script>
+</body>
+</html>
